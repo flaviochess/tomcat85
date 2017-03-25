@@ -197,196 +197,196 @@ Você pode construir eles utilizando os seguintes comandos:
     ant embed
 
 
-(6) Building a full release (as provided via the ASF download pages)
+(6) Construindo uma versão completa (conforme explicado nas páginas da ASF)
 
-    A full release includes the Windows installer which requires a Windows
-    environment to be available to create it. If not building in a Windows
-    environment, the build scripts assume that Wine is available. If this is not
-    the case, the skip.installer property may be set to skip the creation of the
-    Windows installer.
+    Uma versão completa inclui o instalador do Windows, o que requer que você
+    esteja em um ambiente Windows. Se não for este o caso, os scripts de building
+    irá considerar que o Wine está configurado. Por fim se nenhuma dessas opções
+    estão disponíveis, então utilize a propriedade skip.installer para pular a
+    criação de um instalador para o Windows.
 
- 1. Configure GPG, if needed
+ 1. Configure o GPG, se necessário
 
-    If the released artifacts have to be cryptographically signed with a
-    PGP signature, like the official ASF releases are, the following
-    property can be added to the build.properties file:
+    Se a versão completa necessitar ser assinada e criptografada com assinatura
+    PGP, assim como a versão oficial ASF é, a seguinte propriedade deve ser
+    adicionada ao arquivo build.properties:
 
-        # Location of GPG executable (used only for releases)
-        gpg.exec=/path/to/gpg
+        # Local do executável do GPG (usado apenas para  versões completas)
+        gpg.exec=/pasta/do/gpg
 
-    You do not need it if you do not plan to sign the release.
+    Você não precisa disso se não planeja assinar a versão.
 
-    If "gpg.exec" property does not point to an existing file, it will be
-    ignored and this feature will be disabled.
+    Se a propriedade "gpg.exec" não apontar para um arquivo existente, a assinatura
+    será ignorada.
 
-    You will be prompted for the GPG passphrase when the release build
-    starts, unless "gpg.passphrase" property is set.
+    Durante a compilação será solicitado a palavra chave ou você pode
+    definir a propriedade "gpg.passphrase" com este valor.
 
- 2. If building the Windows installer
+ 2. Se for construir o instalador do Windows
 
-    If running the build in a UAC enabled environment, building the Windows
-    installer requires elevated privileges. The simplest way to do this is to
-    open the command prompt used for the build with the "Run as administrator"
-    option.
+    Se for construir em um ambiente com UAC ativado, a construção do instalador
+    do Windows irá necessitar de privilégios elevados. A maneira mais simples
+    de fazer isso é abrir o terminal no qual executará o build usando a opção
+    "abrir como administrador".
 
- 3. Configure the code signing service
+ 3. Configurar o serviço de assinatura de código
 
-    ASF committers performing official releases will need to configure the code
-    signing service so that the Windows installer is signed during the build
-    process. The following properties need to be added to the build.properties
-    file:
+    Para versões oficiais ASF precisará configurar o serviço de assinatura de
+    código para que o instalador do Windows seja assinado durante o processo
+    de build. As seguintes propriedades devem ser adicionadas ao arquivo
+    build.properties:
 
-        # Location of GPG executable (used only for releases)
-        # Code signing of Windows installer
+        # Local do executável do GPG (usado apenas para  versões completas)
+        # Código de assinatura para o instalador do Windows
         do.codesigning=true
         codesigning.user=request-via-pmc
         codesigning.pwd=request-via-pmc
         codesigning.partnercode=request-via-pmc
         codesigning.service=Microsoft Windows Signing
 
-    Release managers will be provided with the necessary credentials by the PMC.
-    It will also be necessary to enable TLS 1.1 and TLS 1.2 by default (they are
-    disabled by default on Java 7) for the build process to communicate with the
-    code signing service. The simplest way is by setting the ANT_OPTS
-    environment variable. E.g. (for Windows):
+    Os gerenciadores de permissão serão fornecidos pelas credenciais do PMC.
+    Também será necessário ativar TLS 1.1 e TLS 1.2 por padrão (eles veem
+    desativados por padrão no Java 7) para construir o processo de comunicação
+    com o serviço de assinatura de código. O caminho mais simples é setando 
+    ANT_OPTS (para Windows):
 
     set ANT_OPTS=-Dhttps.protocols=TLSv1,TLSv1.1,TLSv1.2
 
- 4. Build the release:
+ 4. Construindo a versão completa::
 
     cd ${tomcat.source}
     ant release
 
 
-(7) Tests
+(7) Testes
 
-(7.1) Running Tomcat tests
+(7.1) Rodando os testes do Tomcat
 
-Tomcat includes a number of junit tests. The tests are not run when a
-release is built. There is separate command to run them.
+O Tomcat contém junit testes. Os testes não são executados
+na construção da versão completa. Tem um comando separado para rodar-los.
 
-To run the testsuite use the following command:
+Para rodar a suíte de testes utilize o seguinte comando:
 
     cd ${tomcat.source}
     ant test
 
-It is advisable to redirect output of the above command to a file for later
-inspection.
+É aconselhável redirecionar a saída do comando acima para um arquivo
+para posterior inspeção.
 
-The JUnit reports generated by the tests will be written to the following
-directory:
+O relatório do JUnit gerados durante a execução dos testes se encontrarão
+no diretório:
 
     output/build/logs
 
-By default the testsuite is run three times to test 3 different
-implementations of Tomcat connectors: NIO, NIO2 and APR. (If you are not
-familiar with Tomcat connectors, see config/http.html in documentation for
-details).
+Por padrão a suite de testes é executada três vezes para 3 diferentes
+implementações de connectores Tomcat: NIO, NIO2 e APR. (Se você não está
+familiarizado com Tomcat connectors, veja config/http.html na documentação
+para mais detalhes).
 
-The 3 runs are enabled and disabled individually by the following
-properties, which all are "true" by default:
+As três execuções são ativadas e desativadas individualementes pelas seguintes
+propriedades, todas são "true" por default:
 
     execute.test.nio=true
     execute.test.nio2=true
     execute.test.apr=true
 
-The APR connector can be tested only if Tomcat-Native library binaries are
-found by the testsuite. The "test.apr.loc" property specifies the directory
-where the library binaries are located.
+O APR connector pode ser testado apenas se os binátrios da biblioteca
+Tomcat-Native forem encontrados pela suíte de testes. A propriedade
+"test.apr.loc" especifíca o diretório onde a biblioteca está localizada.
 
-By default the "test.apr.loc" property specifies the following location:
+Por padrão a propriedade "test.apr.loc" especifíca a seguinte localização:
 
     output/build/bin/native/
 
-If you are on Windows and want to test the APR connector you can put the
-tcnative-1.dll file into ${tomcat.source}/bin/native/ and it will be copied
-into the above directory when the build runs.
+Se você estiver no Windows e quiser testar o APR connector você pode colocar
+o arquivo tcnative-1.dll dentro de ${tomcat.source}/bin/native/ e ele será
+copiado para o diretório quando rodar o build.
 
-The unit tests include tests of the clustering functionality which require
-multicast to be enabled. There is a simple application provided in the Tomcat
-test source (org.apache.catalina.tribes.TesterMulticast) that can be used to
-check if a machine supports multicast. Notes on enabling multicast for different
-operating systems are provided in the Javadoc for that class.
+Os testes unitários incluem testes de clusterização, funcionalidade que requer
+multicast habilitado. Existe uma simples aplicação fornecida nos códigos de 
+teste do Tomcat (org.apache.catalina.tribes.TesterMulticast) que pode ser utilizado
+para verificar se sua máquina suporta multicast. Notas sobre como habilitar o
+multicast para diferentes sistemas opercionais são fornecidos no Javadoc desta
+classe.
 
 
-(7.2) Running a single test
+(7.2) Rodando um teste isoladamente
 
-It is possible to run a single JUnit test class by adding the "test.entry"
-property to the build.properties file. The property specifies the name of
-the test class.
+É possível rodar uma única classe de teste adicionando a propriedade
+"test.entry" no arquivo build.properties. A propriedade especifíca o
+nome da classe de teste.
 
-For example:
+Por exemplo:
 
     test.entry=org.apache.catalina.util.TestServerInfo
 
-It is possible to further limit such run to a number of selected test
-methods by adding "test.entry.methods" property. The property specifies a
-comma-separated list of test case methods.
+É possível limitar ainda mais a execução dos testes especificando quais
+métodos devem ser testados através da propriedade "test.entry.methods".
+O valor da propriedade pode ser separado por vírgula para adicionar
+mais de um teste.
 
-For example:
+Por exemplo:
 
     test.entry=org.apache.el.lang.TestELArithmetic
     test.entry.methods=testMultiply01,testMultiply02
 
 
-(7.3) Running a set of tests
+(7.3) Executando um conjunto de testes
 
-It is possible to run a set of JUnit test classes by adding the "test.name"
-property to the build.properties file. The property specifies an Ant
-includes pattern for the fileset of test class files to run.
+É possível executar um conjunto de classes de testes adicionadno a
+propriedade "test.name" no arquivo build.properties. to run.
 
-The default value is "**/Test*.java", so all test classes are being
-executed (with few exceptions - see build.xml for several exclude patterns).
+Por padrão o valor é "**/Test*.java", todas as classes de testes
+são executadas (com algumas exceções - veja o build.xml para
+ver outros padrões de exclusão).
 
-You can include multiple patterns by concatenating them with a comma (",")
-as the separator.
+Você pode incluir vários padrões separando por virgula (",").
 
-For example:
+Por exemplo:
 
     test.name=**/TestSsl.java,**/TestWebSocketFrameClientSSL.java
 
 
-(7.4) Other configuration options
+(7.4) Outras opções de configuração
 
- 1. It is possible to configure the directory where JUnit reports are
- written to. It is configured by "test.reports" property. The default
- value is
+ 1. É possível configurar o diretório onde o JUnit irá gerar os relatórios.
+ Isso é configurado através da propriedade "test.reports". O valor padrão é
 
         output/build/logs
 
- 2. It is possible to enable generation of access log file when the tests
- are run. This is off by default and can be enabled by the following
- property:
+ 2. É possível habilitar a geração de log de acesso enquanto os testes estão
+ rodando. Isso é desabilitado por padrão e pode ser ativado pela a seguinte
+ propriedade:
 
         test.accesslog=true
 
- The "access_log.<date>" file will be written to the same directory as
- JUnit reports,
+ O arquivo "access_log.<date>" será escrito no mesmo diretório que os relatórios
+ do JUnit,
 
         output/build/logs
 
- 3. The testsuite respects logging configuration as configured by
+ 3. A suíte de testes respeita as configurações de log encontrada em
  ${tomcat.source}/conf/logging.properties
 
- The log files will be written to the temporary directory used by the
- tests,
+ Os arquivos de log serão escritos no diretório temporário usado para
+ testes,
 
         output/test-tmp/logs
 
- 4. It is possible to configure formatter used by JUnit reports.
- Configuration properties are "junit.formatter.type",
- "junit.formatter.extension" and "junit.formatter.usefile".
+ 4. É possível configurar a formatação usada nos relatórios do JUnit.
+ As propriedades de configuração são "junit.formatter.type",
+ "junit.formatter.extension" e "junit.formatter.usefile".
 
- For example the following property disables generation of separate report
- files:
+ Por exemplo, a propriedade a seguir desabilita a geração de relatórios separados
+ em arquivos:
 
         junit.formatter.usefile=false
 
- 5. It is possible to speed up testing by letting JUnit to run several
- tests in parallel.
+ 5. É possível aumentar a velocidade dos testes permitindo que o JUnit execute
+    vários testes em paralelo.
 
- This is configured by setting "test.threads" property. The recommended
- value is one thread per core.
+ Isso pode ser configurado com a propriedade "test.threads". O valor recomendado
+ é de uma thread por core.
 
  6. Optional support is provided for the Cobertura code coverage tool.
 

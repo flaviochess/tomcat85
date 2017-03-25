@@ -1,3 +1,21 @@
-# ----- Default Base Path for Dependent Packages -----
 #base.path=/home/me/algum-lugar-para-baixar ##onde será baixado as bibliotecas necessárias para construir o tomcat
+
 #tomcat.output=/home/me/algum-lugar-para-construir ##onde será construido o Tomcat sempre que ele for compilado
+
+#gpg.exec=/pasta/do/gpg ##utilizado somente para gerar versões completas criptografadas e assinadas
+
+
+## ativar ou desativar os testes para cada conector do Tomcat, true por default
+#execute.test.nio=true
+#execute.test.nio2=true
+#execute.test.apr=true
+
+#test.entry=org.apache.catalina.util.TestServerInfo ##para especificar uma única classe pra testar e não a suíte inteira
+
+## opcionalmente pode-se também especificar apenas os métodos que serão executados
+#test.entry.methods=testMultiply01,testMultiply02
+
+
+#test.name=**/TestSsl.java,**/TestWebSocketFrameClientSSL.java ##específica conjunto de classes para testar
+
+#test.accesslog=true ##habilita log de acesso
