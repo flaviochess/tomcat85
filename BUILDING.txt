@@ -78,7 +78,7 @@ O local onde o código do Tomcat está será referenciado como: ${tomcat.source}
 
 (3.2) Construindo
 
- 1. O build é controlado criando o arquivo ${tomcat.source}/build.properties.
+ 1. O build pode ser configurado criando o arquivo ${tomcat.source}/build.properties.
 
     É recomendável sempre criar o arquivo. Você deve iniciar o arquivo com o
     seguinte conteúdo:
@@ -88,23 +88,22 @@ O local onde o código do Tomcat está será referenciado como: ${tomcat.source}
         # devem ser baixados
         base.path=/home/me/algum-lugar-para-baixar
 
- 2. Configure o base.path property adicionar em
-    ${tomcat.source}/build.properties file.
+ 2. Configure o base.path property e adicione no arquivo
+    ${tomcat.source}/build.properties.
 
     A propriedade base.path property especifica onde as dependencias obrigatórias
     do Tomcat para construir-lo serão baixadas. É recomendado que este local
     seja fora da árvore local de diretórios para que você não precise baixar
     as bibliotecas a todo momento.
 
-* NOTE: The default value of the base.path property configures the build script
-  to download the libraries required to build Tomcat to the
-  ${user.home}/tomcat-build-libs directory.
+* NOTE: O valor padrão da propriedade base.path configura o script de construção
+  para fazer o download das bibliotecas necessárias para construir o Tomcat no 
+  diretório ${user.home}/tomcat-build-libs.
 
-* NOTE: Users accessing the Internet through a proxy must use the properties
-  file to indicate to Ant the proxy configuration.
+* NOTE: Usuários que acessam a internet através de um proxy devem usar o arquivo
+  de propriedades para indicar ao Ant a configuração do proxy.
 
-  The following properties should be added to the ${tomcat.source}/build.properties
-  file.
+  As seguintes propriedades devem ser adicionadas no arquivo ${tomcat.source}/build.properties:
 
         proxy.use=true
         proxy.host=proxy.domain
@@ -112,69 +111,65 @@ O local onde o código do Tomcat está será referenciado como: ${tomcat.source}
         proxy.user=username
         proxy.password=password
 
-  See Apache Ant documentation for the <setproxy> task for details.
+  Veja a documentação do Apache Ant para mais detalhes sobre a task <setproxy>.
 
- 3. Go to the sources directory and run Ant:
+ 3. Vá ao diretório do código fonte e rode o Ant:
 
         cd ${tomcat.source}
         ant
 
-    This will execute the "deploy" target in build.xml.
+    Isso irá executar a target "deploy" do build.xml.
 
-    Once the build has completed successfully, a usable Tomcat installation
-    will have been produced in the ${tomcat.source}/output/build directory,
-    and can be started and stopped with the usual scripts.
+    Uma vez que o build foi realizado com sucesso, uma versão do Tomcat
+    será criada no diretório ${tomcat.source}/output/build e poderá ser
+    iniciada e parada através dos scripts respectivos para isso.
 
-    Note that the build includes Tomcat documentation, which can be found
-    in the output/build/webapps/docs directory.
+    Note que o build inclui a documentação do Tomcat no em output/build/webapps/docs.
 
-    The path of the output directory can be controlled by specifying the
-    "tomcat.output" property in the build.properties file.
+    Você pode especificar outro caminho de saída especificando a propriedade
+    "tomcat.output" no arquivo build.properties.
 
-* NOTE: Do not run the build as the root user. Building and running Tomcat
-  does not require root privileges.
+* NOTE: Não execute o build com um root user. Construir e rodar o Tomcat não requer
+  privilégios especiais.
 
 
-(4) Updating sources and rebuilding
+(4) Atualizando o código fonte e fazendo o build novamente
 
-It is recommended that you regularly update the downloaded Tomcat @VERSION_MAJOR_MINOR@
-sources using your SVN client.
+É recomendado que você atualize regularmente o fonte do Tomcat 8.5
+usando um cliente SVN ou Git.
 
-For a quick rebuild of only modified code you can use:
+Para reconstruir rapidamente apenas códigos modificado utilize:
 
     cd ${tomcat.source}
     ant
 
 
-(5) Special builds
+(5) Builds especiais
 
-There are several targets in Tomcat build files that are useful to be
-called separately. They build components that you may want to build
-quickly, or ones that are included in the full release and are not built
-during the default "deploy" build.
+Existem diversos targets no Tomcat úteis para serem chamados separadamente,
+outros que não são incluídos no build mas estão na construção completa.
 
-(5.1) Building documentation
+(5.1) Building da documentação
 
-The documentation web application is built during the default "deploy"
-build.
+A documentação da aplicação web é construída durante o "deploy".
 
-It can be built quickly by using the following commands:
+Mas pode ser reconstruída rapidamente utilizando o comando:
 
     cd ${tomcat.source}
     ant build-docs
 
-The output of this command will be found in the following directory:
+A saída deste comando irá exibir o seguinte diretório:
 
     output/build/webapps/docs
 
 
-The API documentation (Javadoc) is built during a "release" build. It is
-easy to build it separately by using the following commands:
+A documentação da API (Javadoc) é construída durante o "release". Mas
+pode ser facilmente constrída separadamente com o comando:
 
     cd ${tomcat.source}
     ant javadoc
 
-The output of this command will be found in the following directories:
+A saída deste comando irá exibir o seguinte diretório:
 
     output/dist/webapps/docs/api
     output/dist/webapps/docs/elapi
@@ -182,22 +177,21 @@ The output of this command will be found in the following directories:
     output/dist/webapps/docs/servletapi
 
 
-(5.2) Building the extras (commons-logging, webservices etc.)
+(5.2) Building extras (commons-logging, webservices etc.)
 
-These components are documented on the "Additional Components"
-(extras.html) page of documentation. They are built during a "release"
-build.
+Os componetes são documentados em "Additional Components"
+(extras.html) pagina de documentação. Eles são construídos no "release".
 
-You can build them by using the following commands:
+Você pode construir eles utilizando os seguintes comandos:
 
     cd ${tomcat.source}
     ant extras
 
-(5.3) Building the embedded packages
+(5.3) Building dos pacotes incorporados
 
-These are built during a "release" build.
+Essa construção acontece no "release".
 
-You can build them by using the following commands:
+Você pode construir eles utilizando os seguintes comandos:
 
     cd ${tomcat.source}
     ant embed
