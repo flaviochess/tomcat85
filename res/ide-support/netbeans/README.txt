@@ -16,65 +16,67 @@
 ================================================================================
 
 
-       Building and Debugging Apache Tomcat under NetBeans
+       Construindo e Debugando Apache Tomcat no NetBeans
 
 
-Unlike other IDE's, NetBeans is a pure java swing application. It uses
-Apache Ant to build its projects, and works directly with the class files
-and jars created by the standard Apache Ant build.xml files. This strength
-is also its weakness when working with complex projects such as Tomcat that
-already have their own build.xml files, but which do not use the NetBeans
-templates.
+Ao contrário de outras IDEs, o NetBeans é um aplicativo de java swing puro. 
+Ele usa o Apache Ant para construir seus projetos e trabalha diretamente 
+com os arquivos .class e jars criados pelos arquivos padrão do build.xml 
+do Apache Ant. Essa força é também a sua fraqueza ao trabalhar com projetos 
+complexos como o Tomcat que já possuem seus próprios arquivos build.xml, 
+mas que não usam os modelos do NetBeans.
 
-Any of complex Ant project can still be managed under NetBeans by
-defining it to be something called a Free-Form Project. However, because
-the build.xml does not conform to all the NetBeans naming and structural
-conventions, a certain amount of manual customisation is required to
-achieve a useful level of integration.
+Qualquer projeto Ant complexo ainda pode ser gerenciado no NetBeans 
+definindo-o como algo chamado de Projeto de Formulário Livre. No entanto, 
+como o build.xml não está em conformidade com todas as convenções de 
+nomenclatura e estruturação do NetBeans, é necessária uma certa quantidade 
+de personalização manual para obter um nível útil de integração.
 
 
-1. NetBeans can open a Tomcat source tree as a Free-Form Project, which
-   will allow you to edit, build, and debug Tomcat and its unit tests
-   within the workbench. Even with NetBeans 7.1, integration of a project
-   as complex as Tomcat requires significant configuration. The
-   configuration involves dealing with several quirky aspects of the way
-   NetBeans manages this kind of project. Before you try to open Tomcat
-   as a NetBeans project, you are strongly recommended to successfully
-   build and run the tests using Apache Ant from a command prompt!
-   (see BUILDING.txt in the Tomcat source root directory).
+1. O NetBeans pode abrir os fontes do Tomcat como um Projeto de formulário 
+   livre (Free-Form Project), que permitirá editar, criar e depurar o Tomcat 
+   e seus testes unitários dentro da bancada de trabalho. Mesmo com o 
+   NetBeans 7.1, a integração de um projeto tão complexo como o Tomcat 
+   requer uma configuração significativa. A configuração envolve lidar com 
+   vários aspectos peculiares da maneira como o NetBeans gerencia esse tipo 
+   de projeto. Antes de tentar abrir o Tomcat como um projeto NetBeans, é 
+   altamente recomendável construir e executar com êxito os testes usando 
+   o Apache Ant a partir de um prompt de comando! (Consulte BUILDING.txt 
+   no diretório raiz de origem do Tomcat).
 
-2. Once Tomcat has been built, you can install the default NetBeans
-   project configuration by running the following build target:
+2. Uma vez que o Tomcat foi criado, você pode instalar a configuração 
+   de projeto padrão do NetBeans executando o seguinte comando:
 
           ant ide-netbeans
 
-   This uses the Tomcat build.xml to create a new directory called
-   nbproject (this name is reserved by NetBeans). The nbproject directory
-   will then be primed with a self-consistent set of default definitions
-   sufficient to open Tomcat as a Free-Form Project under NetBeans.
+   Isso usa o Tomcat build.xml para criar um novo diretório chamado 
+   nbproject (esse nome é reservado pelo NetBeans). O diretório nbproject 
+   será então iniciado com um conjunto autoconsistente de definições padrão 
+   suficiente para abrir o Tomcat como um Projeto de Formulário Livre no NetBeans.
 
-   Note: if you ever open the Project Properties from the NetBeans context
-   menu, even without making any changes, there is a significant risk
-   that NetBeans will modify one or more of these files. You can
-   restore the Tomcat default files at any time by running this target:
+   Nota: se você abrir as propriedades do projeto no menu de contexto do 
+   NetBeans, mesmo sem fazer alterações, há um risco significativo de que o 
+   NetBeans modifique um ou mais desses arquivos. Você pode restaurar os 
+   arquivos padrão do Tomcat a qualquer momento executando este target:
 
           ant ide-netbeans-replace
 
-   Only the default files will be overwritten, so any other content
-   such as your own local files, and the NetBeans private directory,
-   will not be affected.
+   Somente os arquivos padrão serão sobrescritos, portanto qualquer 
+   outro conteúdo, como seus próprios arquivos locais e o diretório 
+   particular do NetBeans, não serão afetados.
 
-3. NetBeans needs to know where to find the directory where you keep the
-   Tomcat dependencies jars. If you have successfully built Tomcat from
-   a command prompt, you will probably have assigned the base.path
-   property in your build.properties file.
+3. O NetBeans precisa saber onde encontrar o diretório com os jars de 
+   dependências do Tomcat. Se você tiver criado o Tomcat com êxito a 
+   partir do terminal, provavelmente terá atribuído a propriedade 
+   base.path no arquivo build.properties.
 
-   Warning: The support for Tomcat in NetBeans will detect and use this
-            property. However, if you have left it to default, you MUST
-            still define this path in the nb-tomcat-project.properties file!
+   Atenção: O suporte para Tomcat no NetBeans detectará e usará essa 
+            propriedade. No entanto, se você tiver deixado o padrão, 
+            você ainda deve definir este caminho no arquivo 
+            nb-tomcat-project.properties!
 
-   Note: The current support for Tomcat in NetBeans does not include the
-         components in the modules directory (e.g. tomcat-lite).
+   Nota: O suporte atual para Tomcat no NetBeans não inclui os componentes 
+         no diretório de módulos (por exemplo, tomcat-lite).
 
 4. Start NetBeans... once it has initialised and scanned your other open
    projects, just open an existing project and select the location of
